@@ -26,6 +26,10 @@ body{background:#111216;color:#f5f5f6}.top{height:58px;padding:0 22px;background
 .home-main.account-view>#accountSection{display:block!important;margin-top:4px}
 #accountSection{display:none}
 .home-main.account-view #accountSection{display:block}
+/* Project Submission is its own category page, hidden from Home by default */
+#submitGameSection{display:none}
+.home-main.submission-view> :not(#submitGameSection){display:none!important}
+.home-main.submission-view>#submitGameSection{display:block!important;margin-top:4px}
 </style>
 </head>
 <body>
@@ -44,7 +48,7 @@ body{background:#111216;color:#f5f5f6}.top{height:58px;padding:0 22px;background
   </div></section>
 </main>
 <main id="dashboardView" class="hidden"><div class="app-layout">
-<aside class="sidebar"><div class="side-label">MENU</div><a class="side-link active" href="#homeSection">⌂ <span>Home</span></a><a class="side-link" href="#discoverSection">▦ <span>Discover</span></a><a class="side-link" href="#accountSection">◉ <span>My account</span></a><a class="side-link" href="#ownerPanel">✎ <span>Studio controls</span></a><div class="side-divider"></div><div class="side-label">YOUR SPACE</div><a class="side-link" href="#gameGrid">▣ <span>Game library</span></a><a class="side-link" href="#communitySection">♧ <span>Community</span></a><div class="sidebar-bottom"><div class="side-user"><div class="avatar" id="sideAvatar">P</div><div class="side-user-info"><strong id="sideName">Player</strong><span id="sideRole">Player account</span></div></div><button id="sideSignOut" class="side-signout">Sign out ↗</button></div></aside>
+<aside class="sidebar"><div class="side-label">MENU</div><a class="side-link active" href="#homeSection">⌂ <span>Home</span></a><a class="side-link" href="#discoverSection">▦ <span>Discover</span></a><a class="side-link" href="#accountSection">◉ <span>My account</span></a><a class="side-link" href="#ownerPanel">✎ <span>Studio controls</span></a><div class="side-divider"></div><div class="side-label">YOUR SPACE</div><a class="side-link" href="#gameGrid">▣ <span>Game library</span></a><a class="side-link" href="#communitySection">♧ <span>Community</span></a><a class="side-link" href="#submitGameSection">＋ <span>Project Submission</span></a><div class="sidebar-bottom"><div class="side-user"><div class="avatar" id="sideAvatar">P</div><div class="side-user-info"><strong id="sideName">Player</strong><span id="sideRole">Player account</span></div></div><button id="sideSignOut" class="side-signout">Sign out ↗</button></div></aside>
 <div class="home-main" id="homeSection"><div class="home-topline"><div><div class="eyebrow">DEV STUDIOS / HOME</div><h1>Home</h1></div><div class="home-user"><div class="avatar" id="avatar">P</div><div><strong id="chipName">Player</strong><div class="tiny" id="chipRole">Player account</div></div><span id="ownerBadge" class="owner hidden">OWNER</span></div></div>
 <section class="settings-panel" id="accountSection"><div class="eyebrow">YOUR ACCOUNT</div><h2>Account settings</h2><p class="settings-help">Update the name people see, your sign-in username, or your password.</p><form id="settingsForm"><div class="settings-grid"><div class="field"><label for="settingsDisplayName">Display name</label><input id="settingsDisplayName" maxlength="24" placeholder="How people see you" required></div><div class="field"><label for="settingsUsername">Username</label><input id="settingsUsername" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]{3,20}" autocomplete="off" required><span class="tiny">3–20 letters, numbers, or underscores. Used to sign in.</span></div><div class="field"><label for="settingsNewPassword">New password (optional)</label><input id="settingsNewPassword" type="password" minlength="8" maxlength="72" autocomplete="new-password" placeholder="Leave blank to keep current password"></div><div class="field"><label for="settingsConfirmPassword">Confirm new password</label><input id="settingsConfirmPassword" type="password" minlength="8" maxlength="72" autocomplete="new-password" placeholder="Type the new password again"></div></div><div class="settings-actions"><button class="btn primary" id="saveSettings" type="submit">Save changes</button><span id="settingsMessage" class="settings-message" role="status"></span></div></form></section><section class="community-row" id="communitySection"><div><h2>Your community</h2><p>Share Dev Studios and invite people to discover games.</p></div><button class="btn" id="shareSite">↗ Share Dev Studios</button></section>
 <section class="settings-panel" id="submitGameSection"><div class="eyebrow">FOR DEVELOPERS</div><h2>Submit a game</h2><p class="settings-help">Share a game you've made. Submissions are reviewed before they appear in the public library.</p><form id="gameSubmissionForm"><div class="settings-grid"><div class="field"><label for="submissionTitle">Game title</label><input id="submissionTitle" maxlength="60" minlength="2" placeholder="Your game's name" required></div><div class="field"><label for="submissionUrl">Game URL</label><input id="submissionUrl" type="url" placeholder="https://…" required></div><div class="field wide"><label for="submissionDescription">Description</label><textarea id="submissionDescription" rows="3" maxlength="300" minlength="10" placeholder="What is your game about?" required></textarea></div><div class="field wide"><label for="submissionImage">Cover image URL (optional)</label><input id="submissionImage" type="url" placeholder="https://…"></div></div><div class="settings-actions"><button class="btn primary" id="submitGameButton" type="submit">Send for review</button><span id="submissionMessage" class="settings-message" role="status"></span></div></form><div class="section-head" style="margin-top:24px"><h2 style="font-size:16px">Your submissions</h2></div><div id="mySubmissions" class="empty">Loading your submissions…</div></section>
@@ -116,9 +120,10 @@ $("settingsForm").addEventListener("submit",async(e)=>{e.preventDefault();const 
 function setDashboardView(view){
  const main=$("homeSection");
  main.classList.toggle("account-view",view==="account");
+ main.classList.toggle("submission-view",view==="submission");
  document.querySelectorAll(".sidebar .side-link").forEach(link=>{
    const target=link.getAttribute("href")||"";
-   link.classList.toggle("active",view==="account"?target==="#accountSection":view==="home"?target==="#homeSection":false);
+   link.classList.toggle("active",view==="account"?target==="#accountSection":view==="submission"?target==="#submitGameSection":view==="home"?target==="#homeSection":false);
  });
  if(view==="account"){
    $("settingsMessage").textContent="";
@@ -126,6 +131,8 @@ function setDashboardView(view){
    $("settingsConfirmPassword").value="";
    if(currentProfile){$("settingsDisplayName").value=currentProfile.display_name||currentProfile.username;$("settingsUsername").value=currentProfile.username||"";}
    history.replaceState(null,"","#accountSection");
+ } else if(view==="submission"){
+   history.replaceState(null,"","#submitGameSection");
  } else {
    history.replaceState(null,"","#homeSection");
  }
@@ -134,6 +141,7 @@ document.querySelectorAll('.sidebar .side-link, .top-nav a').forEach(link=>{
  link.addEventListener("click",e=>{
    const href=link.getAttribute("href")||"";
    if(href==="#accountSection"){e.preventDefault();setDashboardView("account");}
+   else if(href==="#submitGameSection"){e.preventDefault();setDashboardView("submission");}
    else if(href==="#homeSection"||href==="#discoverSection"||href==="#communitySection"||href==="#gameGrid"||href==="#ownerPanel"){
      e.preventDefault();setDashboardView("home");
      if(href!=="#homeSection")setTimeout(()=>$(href.slice(1))?.scrollIntoView({behavior:"smooth",block:"start"}),0);
