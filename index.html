@@ -132,9 +132,9 @@ body.studio-open{overflow:hidden}
 #studioView .hidden{display:none!important}
 
 .studio-dpad{position:absolute;right:12px;bottom:12px;display:grid;gap:5px;justify-items:center;z-index:3;touch-action:none}.studio-dpad>div{display:flex;gap:5px}.studio-dpad button{width:38px;height:38px;border-radius:9px;border:1px solid #ffffff55;background:#17263dcc;color:#fff;font-size:16px;font-weight:800;touch-action:none;user-select:none}
-.studio-properties-toggle{display:none}
+.studio-properties-toggle{display:none}.studio-tools-toggle{display:none}
 @media(max-width:900px){.studio-layout{position:relative;grid-template-columns:175px minmax(0,1fr);grid-template-rows:minmax(0,1fr)}.studio-properties-toggle{display:inline-block}.studio-right{display:block;position:absolute;right:0;top:0;bottom:0;width:min(82vw,270px);z-index:6;transform:translateX(105%);transition:transform .2s ease;box-shadow:-16px 0 35px #0006}.studio-right.open{transform:translateX(0)}.studio-topbar{padding:0 9px}.studio-project-title{display:none}}
-@media(max-width:620px){.studio-layout{grid-template-rows:minmax(0,1fr)}.studio-topbar{height:auto;min-height:58px;flex-wrap:wrap;padding:7px;gap:6px}.studio-brand{font-size:10px}.studio-top-actions{gap:4px}.studio-btn{padding:7px;font-size:10px}.studio-layout{grid-template-columns:116px minmax(0,1fr)}.studio-panel{padding:8px}.studio-tool-grid{grid-template-columns:1fr 1fr}.studio-tool{padding:7px 2px}.studio-tool b{font-size:17px}.studio-tool span{font-size:9px}.studio-panel-heading{font-size:9px}.studio-project-item strong{font-size:10px}.studio-project-item span{font-size:9px}.studio-script-panel{height:165px;flex-basis:165px}.studio-viewport{min-height:190px}.studio-viewport-hint{font-size:9px}.studio-selected-name{max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+@media(max-width:620px){.studio-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}.studio-tools-toggle{display:inline-block}.studio-left{position:absolute;left:0;top:0;bottom:0;width:min(78vw,260px);z-index:7;transform:translateX(-105%);transition:transform .2s ease;box-shadow:16px 0 35px #0006}.studio-left.open{transform:translateX(0)}.studio-topbar{height:auto;min-height:58px;flex-wrap:wrap;padding:7px;gap:6px}.studio-brand{font-size:10px}.studio-top-actions{gap:4px}.studio-btn{padding:7px;font-size:10px}.studio-layout{grid-template-columns:116px minmax(0,1fr)}.studio-panel{padding:8px}.studio-tool-grid{grid-template-columns:1fr 1fr}.studio-tool{padding:7px 2px}.studio-tool b{font-size:17px}.studio-tool span{font-size:9px}.studio-panel-heading{font-size:9px}.studio-project-item strong{font-size:10px}.studio-project-item span{font-size:9px}.studio-script-panel{height:165px;flex-basis:165px}.studio-viewport{min-height:190px}.studio-viewport-hint{font-size:9px}.studio-selected-name{max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -207,7 +207,7 @@ body.studio-open{overflow:hidden}
     </aside>
     <main class="studio-workspace">
       <div class="studio-toolbar">
-        <div class="studio-tool-modes">
+        <div class="studio-tool-modes"><button id="studioToolsToggle" class="studio-icon-btn studio-tools-toggle" type="button" title="Show tools">☰</button>
           <button id="studioMoveTool" class="studio-icon-btn" title="Move">↔</button>
           <button id="studioRotateTool" class="studio-icon-btn" title="Rotate">⟳</button>
           <button id="studioScaleTool" class="studio-icon-btn" title="Scale">⤢</button>
