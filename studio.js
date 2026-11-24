@@ -67,7 +67,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
     $("studioTools").classList.toggle("hidden", !on);
     $("studioInspector").classList.toggle("hidden", !on);
     $("studioScriptPanel").classList.toggle("hidden", !on);
-    $("studioProjectBar").classList.toggle("hidden", !on);
+    $("studioProjectBar")?.classList.toggle("hidden", !on);
     $("studioPlayLabel").textContent = on ? "Studio Editor" : "Published Game";
     $("studioPlayButton").classList.toggle("hidden", !on);
     $("studioSaveButton").classList.toggle("hidden", !on);
