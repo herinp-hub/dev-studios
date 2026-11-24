@@ -381,6 +381,6 @@ const {data:{session:existingSession}}=await supabase.auth.getSession();if(exist
 const studioApp=initStudio({supabase,$,toast,getUser:()=>currentUser,getProfile:()=>currentProfile});
 $("openStudio").addEventListener("click",e=>{e.preventDefault();setDashboardView("home");studioApp.showEditor()});
 const playSlug=new URLSearchParams(location.search).get("play");
-if(playSlug){$("authView").classList.add("hidden");$("dashboardView").classList.add("hidden");await studioApp.openPublishedGame(playSlug);}
+if(playSlug){$("authView").classList.add("hidden");$("dashboardView").classList.remove("hidden");await studioApp.openPublishedGame(playSlug);}
 </script>
 </body></html>
