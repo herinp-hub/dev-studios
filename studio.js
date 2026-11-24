@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 
-export function initStudio({ supabase, $, toast, getUser, getProfile }) {
+export function initStudio({ supabase, $, toast, getUser, getProfile, onPublished }) {
   const view = $("studioView");
   const canvas = $("studioCanvas");
   const scene = new THREE.Scene();
@@ -436,6 +436,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
       currentProject.is_published = true;
       currentProject.published_game_slug = slug;
       await loadProjectList();
+      if (typeof onPublished === "function") await onPublished();
       status("Published! Your game is now in the Dev Studios dashboard.");
       toast("Your game is live on Dev Studios!");
     } catch (error) {
