@@ -84,6 +84,9 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
     view.classList.add("hidden");
     document.body.classList.remove("studio-open");
     stopPlay();
+    if (animationId) { cancelAnimationFrame(animationId); animationId = 0; }
+    keys = {};
+    $("studioInspector").classList.remove("open");
     status("");
     if (location.search.includes("play=")) history.replaceState(null, "", location.pathname);
   }
@@ -268,8 +271,8 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
     $("studioPlayButton").classList.add("danger");
     spawnPlayer();
     $("studioDpad").classList.remove("hidden");
-    runSafeScript("start");
     status("Play mode: use WASD, arrows, or the touch pad to move. Tap a part to run its click script.");
+    runSafeScript("start");
   }
   function stopPlay() {
     if (!playing) return;
@@ -466,8 +469,8 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
     playing = true;
     spawnPlayer();
     $("studioDpad").classList.remove("hidden");
-    runSafeScript("start");
     status("Explore the game. Move with the touch pad or WASD, and tap objects to interact.");
+    runSafeScript("start");
   }
   function bindNumberFields() {
     ["studioObjectName", "studioPosX", "studioPosY", "studioPosZ", "studioSizeX", "studioSizeY", "studioSizeZ", "studioRotX", "studioRotY", "studioRotZ", "studioColor"]
@@ -513,6 +516,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
     else runSafeScript("start");
     status("Scripts tested. " + $("studioScript").value.length + " characters loaded.");
   });
+  $("studioTitle").addEventListener("input", () => { $("studioProjectTitle").textContent = $("studioTitle").value.trim() || "New project"; });
   $("studioScript").addEventListener("input", () => {
     $("studioScriptLength").textContent = $("studioScript").value.length + "/12000";
   });
