@@ -479,7 +479,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
       .forEach(id => $(id).addEventListener("change", applyInspector));
   }
   $("studioExitButton").addEventListener("click", closeView);
-  $("studioPropertiesToggle").addEventListener("click", () => $("studioInspector").classList.toggle("open"));
+  $("studioPropertiesToggle").addEventListener("click", () => $("studioInspector").classList.toggle("open"));\n  $("studioToolsToggle").addEventListener("click", () => $("studioTools").classList.toggle("open"));
   document.querySelectorAll("#studioDpad [data-move]").forEach(button => {
     const key = button.dataset.move;
     const down = event => { event.preventDefault(); keys[key] = true; };
