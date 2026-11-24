@@ -130,7 +130,8 @@ body.studio-open{overflow:hidden}
 .studio-script-panel{height:190px;flex:0 0 190px;background:#101827;border-top:1px solid #29394f;padding:10px 12px;display:flex;flex-direction:column;gap:7px}.studio-script-heading{display:flex;justify-content:space-between;align-items:center}.studio-script-heading div{display:flex;gap:9px;align-items:center}.studio-script-heading strong{font-size:12px}.studio-script-heading span,.studio-script-footer{font-size:10px;color:#8194af}.studio-script-panel textarea{width:100%;flex:1;min-height:75px;resize:none;background:#080e18;border:1px solid #293a53;color:#d8e5fb;border-radius:7px;padding:9px;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;outline:none}.studio-script-footer{display:flex;justify-content:space-between}
 .studio-label{display:block;font-size:10px;color:#9eafc6;margin:11px 0 5px}.studio-input{width:100%;background:#0c1421;border:1px solid #2a3b54;color:#edf3ff;border-radius:6px;padding:8px;font-size:12px;min-width:0}.studio-input:focus,.studio-script-panel textarea:focus{outline:1px solid #638cff;border-color:#638cff}.studio-property-title{font-size:10px;color:#91a3bc;margin:13px 0 6px}.studio-vector{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.studio-vector .studio-input{padding:7px 4px;font-size:11px}.studio-color{width:100%;height:34px;border:1px solid #2a3b54;border-radius:6px;background:#0c1421;padding:3px}
 #studioView .hidden{display:none!important}
-@media(max-width:900px){.studio-layout{grid-template-columns:175px minmax(0,1fr)}.studio-right{display:none}.studio-topbar{padding:0 9px}.studio-project-title{display:none}}
+.studio-properties-toggle{display:none}
+@media(max-width:900px){.studio-layout{position:relative;grid-template-columns:175px minmax(0,1fr)}.studio-properties-toggle{display:inline-block}.studio-right{display:block;position:absolute;right:0;top:0;bottom:0;width:min(82vw,270px);z-index:6;transform:translateX(105%);transition:transform .2s ease;box-shadow:-16px 0 35px #0006}.studio-right.open{transform:translateX(0)}.studio-topbar{padding:0 9px}.studio-project-title{display:none}}
 @media(max-width:620px){.studio-topbar{height:auto;min-height:58px;flex-wrap:wrap;padding:7px;gap:6px}.studio-brand{font-size:10px}.studio-top-actions{gap:4px}.studio-btn{padding:7px;font-size:10px}.studio-layout{grid-template-columns:116px minmax(0,1fr)}.studio-panel{padding:8px}.studio-tool-grid{grid-template-columns:1fr 1fr}.studio-tool{padding:7px 2px}.studio-tool b{font-size:17px}.studio-tool span{font-size:9px}.studio-panel-heading{font-size:9px}.studio-project-item strong{font-size:10px}.studio-project-item span{font-size:9px}.studio-script-panel{height:165px;flex-basis:165px}.studio-viewport{min-height:190px}.studio-viewport-hint{font-size:9px}.studio-selected-name{max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 </style>
 </head>
@@ -209,7 +210,7 @@ body.studio-open{overflow:hidden}
           <button id="studioRotateTool" class="studio-icon-btn" title="Rotate">⟳</button>
           <button id="studioScaleTool" class="studio-icon-btn" title="Scale">⤢</button>
           <span class="studio-toolbar-separator"></span>
-          <span id="studioSelectedName" class="studio-selected-name">Nothing selected</span>
+          <span id="studioSelectedName" class="studio-selected-name">Nothing selected</span><button id="studioPropertiesToggle" class="studio-icon-btn studio-properties-toggle" type="button" title="Show properties">⚙</button>
         </div>
         <button id="studioDeletePart" class="studio-icon-btn studio-delete" title="Delete selected object">⌫</button>
       </div>
