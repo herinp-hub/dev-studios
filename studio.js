@@ -6,9 +6,9 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
   const view = $("studioView");
   const canvas = $("studioCanvas");
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x101827);
+  scene.background = new THREE.Color(0x182438);
   const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-  camera.position.set(13, 11, 16);
+  camera.position.set(11, 9, 13);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.shadowMap.enabled = true;
@@ -27,7 +27,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
   const grid = new THREE.GridHelper(100, 100, 0x53627b, 0x26354b);
   grid.position.y = 0.01;
   scene.add(grid);
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshStandardMaterial({ color: 0x253247, roughness: 0.95 }));
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshStandardMaterial({ color: 0x34445e, roughness: 0.95 }));
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
   floor.name = "StudioBaseplate";
@@ -77,7 +77,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
   function openView() {
     view.classList.remove("hidden");
     document.body.classList.add("studio-open");
-    resize();
+    requestAnimationFrame(() => { resize(); requestAnimationFrame(resize); });
     if (!animationId) animate();
   }
   function closeView() {
@@ -92,13 +92,15 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
   }
   function resize() {
     if (!view || view.classList.contains("hidden")) return;
-    const rect = canvas.getBoundingClientRect();
-    const width = Math.max(1, rect.width);
-    const height = Math.max(1, rect.height);
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const width = Math.max(1, Math.floor(rect.width));
+    const height = Math.max(1, Math.floor(rect.height));
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
   }
+  const resizeObserver = new ResizeObserver(() => resize());
+  resizeObserver.observe(canvas.parentElement);
   function geometry(type) {
     if (type === "sphere") return new THREE.SphereGeometry(1, 28, 18);
     if (type === "cylinder") return new THREE.CylinderGeometry(1, 1, 1, 24);
@@ -534,7 +536,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile, onPublishe
     openView();
     loadProjectList();
     if (!currentProject) newProject();
-    resize();
+    requestAnimationFrame(() => { resize(); requestAnimationFrame(resize); });
   }
   refreshExplorer();
   return { showEditor, openPublishedGame, closeView };
