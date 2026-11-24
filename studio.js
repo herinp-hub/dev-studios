@@ -137,6 +137,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
     const rows = Array.isArray(data?.objects) ? data.objects : [];
     rows.forEach(createMesh);
     $("studioScript").value = typeof data?.script === "string" ? data.script : "";
+    $("studioScriptLength").textContent = $("studioScript").value.length + "/12000";
     refreshExplorer();
     selectObject(objects[0] || null);
   }
@@ -172,6 +173,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
     if (!playing && !publicMode && obj) gizmo.attach(obj);
     else gizmo.detach();
     $("studioSelectedName").textContent = obj ? obj.name : "Nothing selected";
+    if (window.innerWidth <= 900 && obj && !publicMode) $("studioInspector").classList.add("open");
     $("studioProperties").classList.toggle("hidden", !obj || publicMode);
     if (obj) syncInspector();
     refreshExplorer();
@@ -461,6 +463,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
       .forEach(id => $(id).addEventListener("change", applyInspector));
   }
   $("studioExitButton").addEventListener("click", closeView);
+  $("studioPropertiesToggle").addEventListener("click", () => $("studioInspector").classList.toggle("open"));
   $("studioNewButton").addEventListener("click", newProject);
   $("studioSaveButton").addEventListener("click", saveProject);
   $("studioPublishButton").addEventListener("click", publishProject);
