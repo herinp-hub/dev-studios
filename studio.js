@@ -56,7 +56,7 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
       { id: "spawn-point", name: "SpawnLocation", type: "cylinder", position: [0, 1.2, 0], rotation: [0, 0, 0], scale: [2, 0.35, 2], color: "#31c48d" },
       { id: "starter-block", name: "Part", type: "box", position: [3, 1.5, 0], rotation: [0, 0, 0], scale: [2, 2, 2], color: "#638cff" }
     ],
-    script: '// DevScript: safe starter scripting\n// on start { color("Part", "#ff8a4c"); }\n// on click("Part") { color("Part", "#38d9a9"); say("Nice click!"); }\n'
+    script: '// DevScript: safe starter scripting\non start { color("Part", "#ff8a4c"); }\non click("Part") { color("Part", "#38d9a9"); say("Nice click!"); }\n'
   });
   function status(message) {
     const el = $("studioStatus");
@@ -251,24 +251,31 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
     syncInspector();
     refreshExplorer();
   }
-  function startPlay() {
-    if (playing || publicMode) return;
-    playing = true;
-    gizmo.detach();
-    $("studioPlayButton").textContent = "■ Stop";
-    $("studioPlayButton").classList.add("danger");
+  function spawnPlayer() {
+    if (player) return;
     player = new THREE.Mesh(new THREE.CapsuleGeometry(0.45, 1, 4, 8), new THREE.MeshStandardMaterial({ color: 0xf7d38a }));
     player.position.set(0, 1.25, 5);
     player.castShadow = true;
     player.name = "Player";
     scene.add(player);
+  }
+  function startPlay() {
+    if (playing) return;
+    if (publicMode) return;
+    playing = true;
+    gizmo.detach();
+    $("studioPlayButton").textContent = "■ Stop";
+    $("studioPlayButton").classList.add("danger");
+    spawnPlayer();
+    $("studioDpad").classList.remove("hidden");
     runSafeScript("start");
-    status("Play mode: use WASD or arrow keys to move. Tap a part to run its click script.");
+    status("Play mode: use WASD, arrows, or the touch pad to move. Tap a part to run its click script.");
   }
   function stopPlay() {
     if (!playing) return;
     playing = false;
     if (player) { scene.remove(player); player.geometry.dispose(); player.material.dispose(); player = null; }
+    $("studioDpad").classList.add("hidden");
     $("studioPlayButton").textContent = "▶ Play";
     $("studioPlayButton").classList.remove("danger");
     if (selected && !publicMode) gizmo.attach(selected);
@@ -455,8 +462,11 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
     loadScene(result.data.scene || defaultScene());
     orbit.target.set(0, 1, 0);
     camera.position.set(13, 11, 16);
+    playing = true;
+    spawnPlayer();
+    $("studioDpad").classList.remove("hidden");
     runSafeScript("start");
-    status("Explore the game. Tap objects to interact.");
+    status("Explore the game. Move with the touch pad or WASD, and tap objects to interact.");
   }
   function bindNumberFields() {
     ["studioObjectName", "studioPosX", "studioPosY", "studioPosZ", "studioSizeX", "studioSizeY", "studioSizeZ", "studioRotX", "studioRotY", "studioRotZ", "studioColor"]
@@ -464,6 +474,15 @@ export function initStudio({ supabase, $, toast, getUser, getProfile }) {
   }
   $("studioExitButton").addEventListener("click", closeView);
   $("studioPropertiesToggle").addEventListener("click", () => $("studioInspector").classList.toggle("open"));
+  document.querySelectorAll("#studioDpad [data-move]").forEach(button => {
+    const key = button.dataset.move;
+    const down = event => { event.preventDefault(); keys[key] = true; };
+    const up = event => { event.preventDefault(); keys[key] = false; };
+    button.addEventListener("pointerdown", down);
+    button.addEventListener("pointerup", up);
+    button.addEventListener("pointercancel", up);
+    button.addEventListener("pointerleave", up);
+  });
   $("studioNewButton").addEventListener("click", newProject);
   $("studioSaveButton").addEventListener("click", saveProject);
   $("studioPublishButton").addEventListener("click", publishProject);
